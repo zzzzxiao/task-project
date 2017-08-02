@@ -1,3 +1,25 @@
-.app{
+.common{
+    background-clip: content-box;
+    border: 1px solid transparent; 
+}
+.title{
+    color: green;
+}
+:global(.title){
     color: red;
+}
+:global(.font){
+    font-size: 16px;
+    color: gainsboro;
+}
+.item{
+    composes: common;
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    display: inline-block;
+    padding: 10px;
+}
+.item1{
+    composes:color from './common.scss';
 }
