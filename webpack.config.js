@@ -48,20 +48,9 @@ module.exports = {
                     }
                 }
             },
-            // {
-            //     test: /\.css$/,
-            //     use: ExtractTextPlugin.extract({
-            //         fallbackLoader: 'style-loader',
-            //         loader: [
-            //             { loader: 'postcss-loader', options: { sourceMap: true } },
-            //             'style-loader',
-            //             'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
-            //         ]
-            //     })
-            // },
             {
-				// test: /\.(css|scss)?$/,
-				test: /\.css$/,
+				// test: /\.(css|scss)$/,// 不晓得为啥这样并在一起写有问题，css和scss的loader要分开配置，不然有问题
+				test: /\.scss$/,
 				use: ExtractTextPlugin.extract({
 					fallback: "style-loader",
 					use: [
@@ -70,24 +59,41 @@ module.exports = {
 							options: {
 								modules: true,
 								importLoaders: 1,
-								localIdentName: '[name]__[local]___[hash:base64:5]'
+								localIdentName: '[path]___[name]__[local]___[hash:base64:5]'
 							}
 						},
 						// {
 						// 	loader: 'resolve-url-loader'
 						// },
-						// {
-						// 	loader: 'sass-loader',
-						// 	options: {
-						// 		sourceMap: true
-						// 	}
-                        // }, 
+						{
+							loader: 'sass-loader'
+                        }, 
                         {
 							loader: 'postcss-loader'
 						}
 					]
 				})
 			},
+            {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        {
+							loader: 'css-loader',
+							options: {
+								modules: true,
+								importLoaders: 1,
+								localIdentName: '[path]___[name]__[local]___[hash:base64:5]'
+							}
+						},
+                        { 
+                            loader: 'postcss-loader', 
+                            options: { sourceMap: true } 
+                        }
+                    ]
+                })
+            },
             { //loading images
                 test: /\.(png|svg|jpg|gif)$/,
                 use: [
@@ -107,7 +113,9 @@ module.exports = {
     devServer: {
         hot: true, // Tell the dev-server we're using HMR
         contentBase: path.resolve(__dirname, 'dist'),
-        publicPath: '/'
+        publicPath: '/',
+        port: 9099,
+        inline: true,
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -122,16 +130,40 @@ module.exports = {
         new webpack.NamedModulesPlugin(),
         new webpack.LoaderOptionsPlugin({
             options: {
+                context: path.join(__dirname, 'src'),
+                output: {
+                  path: path.join(__dirname, 'dist'),
+                },
                 postcss: function () {
                     return [autoprefixer];
                 },
-                // devServer: {
-                //     contentBase: "./dist", //本地服务器所加载的页面所在的目录
-                //     colors: true, //终端中输出结果为彩色
-                //     historyApiFallback: true, //不跳转
-                //     inline: true //实时刷新
-                // }
+                devServer: {
+                    contentBase: "./dist", //本地服务器所加载的页面所在的目录
+                    colors: true, //终端中输出结果为彩色
+                    historyApiFallback: true, //不跳转
+                    inline: true //实时刷新
+                }
             }
-        })
+        }),
+        // new webpack.LoaderOptionsPlugin({
+        //     test: /\.css$/,
+        //     debug: true,
+        //     options: {
+        //       postcss: [
+        //         precss(),
+        //         autoprefixer({
+        //           browsers: [
+        //             'last 3 version',
+        //             'ie >= 10',
+        //           ],
+        //         }),
+        //         mqpacker(),
+        //       ],
+        //       context: path.join(__dirname, 'src'),
+        //       output: {
+        //         path: path.join(__dirname, 'dist'),
+        //       },
+        //     },
+        //   })
     ]
 }

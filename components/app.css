@@ -23,3 +23,11 @@
 .item1{
     composes:color from './common.scss';
 }
+.name{
+    color: green;
+}
+.example{
+    width: 100%;
+    /* height: 500px; */
+    margin-top: 50px;
+}

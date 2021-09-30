@@ -16,7 +16,7 @@
         "react-hmre"
     ],
     "plugins": [
-        "react-hot-loader/babel",
+        "react-hot-loader/babel"
         // "babel-loader",
         // "transform-runtime"
         // 开启react代码的模块热替换（HMR）

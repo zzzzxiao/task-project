@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义序列号</title>
+    <script>
+        const makeIndex = (index, list) => {
+            if (index <= 10) {
+                return list[index];
+            } else if (index > 10 && index < 100) {
+                const tenIndex = Math.floor(index / 10);
+                return (tenIndex === 1 ? '' : makeIndex(Math.floor(index / 10), list)) + '十' + makeIndex((index % 10), list);
+            }else{
+                const hundredIndex = (index % 100);
+                const tenIndex = Math.floor(hundredIndex / 10);
+                if(hundredIndex > 10){
+                    return makeIndex(Math.floor(index / 100), list) + '百' + makeIndex(hundredIndex, list);
+                }
+                return makeIndex(Math.floor(index / 100), list) + '百' + '零' + makeIndex(hundredIndex, list);
+            }
+            
+        };
+        const titleIndex = ['零','一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
+        const customIndex = makeIndex(3, titleIndex);
+        console.log(customIndex)
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
